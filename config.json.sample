@@ -1,0 +1,6 @@
+{
+    "apikey": "your-api-key",
+    "apitoken": "your-api-token",
+    "boardname": "board-youre-looking-for",
+    "username": "your-trello-username"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "TrelloEmailCreator",
+  "version": "1.0.0",
+  "description": "Ability to provide status reports on a trello board via email",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Josh Potts",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.6.2"
+  }
+}
