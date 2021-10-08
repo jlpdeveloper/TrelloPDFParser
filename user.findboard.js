@@ -4,10 +4,10 @@ let config = require('./config.json');
 // https://www.npmjs.com/package/node-fetch
 const fetch = require('node-fetch');
 
-module.exports = function () {
+module.exports = function (username, boardname) {
     let promise = new Promise((resolve, reject) => {
-    let apiurl = 'https://api.trello.com/1/members/' + config.username + '/boards?' +
-        'token=' + config.apitoken + '&key=' + config.apikey + '&name=' + config.boardname;
+    let apiurl = 'https://api.trello.com/1/members/' + username + '/boards?' +
+        'token=' + config.apitoken + '&key=' + config.apikey;
     fetch(apiurl, {
         method: 'GET',
         headers: {
@@ -23,13 +23,12 @@ module.exports = function () {
             
         })
         .then(json => {
-            var filteredBoards = json.filter(d => { return d.name == config.boardname});
-            console.log(filteredBoards);
+            var filteredBoards = json.filter(d => { return d.name == boardname});
             if(filteredBoards.length > 0){
                 resolve(filteredBoards[0].id);
             }
             else{
-                reject('');
+                reject('Board was not found. Makesure your username and board name are correct!');
             }
         })
         .catch(err => {
