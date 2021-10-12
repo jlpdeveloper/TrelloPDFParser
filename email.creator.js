@@ -19,7 +19,9 @@ module.exports = function (listCardInfo, members, boardCustomFields) {
         });
       });
       Promise.all(listPromise).then(() => {
-        fs.writeFile('email.txt', email).then(() => {
+        var now = new Date();
+
+        fs.writeFile((now.getMonth() + 1) + now.getDate() + + now.getFullYear() +  'email.txt', email).then(() => {
           resolve(email);
         });
       });

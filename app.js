@@ -6,6 +6,7 @@ var getUserByID = require('./user.getbyid');
 var getBoardCustomFields = require('./board.getCustomFields');
 const prompt = require('prompt');
 let promptCB = require('prompt-checkbox');
+const emailCreator = require('./email.creator');
 
 
 let members = [];
@@ -87,8 +88,10 @@ function promptUserForLists(lists) {
             //once all the promises are done, get all the information on the cards and compile the email
             Promise.all(getCardsPromiseArray).then(values => {
                 //construct email here
-                console.log(listCardInfo);
-                
+                emailCreator(listCardInfo, members, boardCustomFields).then(() => {
+                    console.log('Email has been created!');
+                });
+
             });
         })
         .catch(onErr);
