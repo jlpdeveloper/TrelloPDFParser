@@ -3,12 +3,14 @@ var getLists = require('./board.getlists');
 var getCards = require('./list.getcards');
 var getBoardMembers = require('./board.getmembers');
 var getUserByID = require('./user.getbyid');
+var getBoardCustomFields = require('./board.getCustomFields');
 const prompt = require('prompt');
 let promptCB = require('prompt-checkbox');
-const { userInfo } = require('os');
+
 
 let members = [];
-var listCardInfo = {};
+let listCardInfo = {};
+let boardCustomFields = [];
 //start the prompt to ask for the username / password
 prompt.start();
 //setup schema for what to ask for
@@ -83,9 +85,10 @@ function promptUserForLists(lists) {
                 getCardsPromiseArray.push(promise);
             });
             //once all the promises are done, get all the information on the cards and compile the email
-            Promise.all(getCardsPromiseArray).then(values =>{
+            Promise.all(getCardsPromiseArray).then(values => {
                 //construct email here
                 console.log(listCardInfo);
+                
             });
         })
         .catch(onErr);
@@ -95,20 +98,24 @@ function cacheBoardInfo(username, boardname) {
     let promise = new Promise((resolve, reject) => {
         //get the board based on the board name and username
         getBoard(username, boardname).then(boardid => {
-            //get all members of the board and cache that
-            getBoardMembers(boardid).then(_members => {
-                var promiseArray = [];
-                //get all information for the members
-                _members.forEach(member => {
-                    promiseArray.push(getUserByID(member.idMember));
-                });
-                Promise.all(promiseArray).then(users => {
-                    members = users;
-                    // console.log(members);
-                    resolve(boardid);
-                });
+            //cache custom fields for the board
+            getBoardCustomFields(boardid).then(customFields => {
+                boardCustomFields = customFields;
+                //get all members of the board and cache that
+                getBoardMembers(boardid).then(_members => {
+                    var promiseArray = [];
+                    //get all information for the members
+                    _members.forEach(member => {
+                        promiseArray.push(getUserByID(member.idMember));
+                    });
+                    Promise.all(promiseArray).then(users => {
+                        members = users;
+                        // console.log(members);
+                        resolve(boardid);
+                    });
 
-            });
+                });
+            })
         }).catch(err => {
             onErr(err);
             reject(err);
