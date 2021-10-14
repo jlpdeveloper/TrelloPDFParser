@@ -43,6 +43,7 @@ function onErr(err) {
 }
 //function to start getting board info
 function beginTrelloIntegration(username, boardname) {
+    console.log('Gathering Information about Board, Please wait....')
     //get information about board
     cacheBoardInfo(username, boardname).then(boardid => {
         //get lists from the board
