@@ -12,7 +12,13 @@ module.exports = function (card, members, boardCustomFields) {
                         memberArray.push(member.fullName);
                     }
                 });
-                cardInfo += memberArray.join(',');
+                if(memberArray.length > 0){
+                    cardInfo += memberArray.join(',');
+                }
+                else{
+                    cardInfo += 'Not Assigned';
+                }
+                
                 var statusField = boardCustomFields.find(field => {
                     return field.display.name == 'Project Status';
                 });
