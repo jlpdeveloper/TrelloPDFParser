@@ -15,9 +15,7 @@ module.exports = function (username, boardname) {
         }
     })
         .then(response => {
-            console.log(
-                `Response: ${response.status} ${response.statusText}`
-            );
+           
             //console.log(response.json());
             return response.json();
             

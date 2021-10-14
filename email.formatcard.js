@@ -12,7 +12,7 @@ module.exports = function (card, members, boardCustomFields) {
                         memberArray.push(member.fullName);
                     }
                 });
-                cardInfo += memberArray.join(',') + '\r\nStatus:';
+                cardInfo += memberArray.join(',');
                 var statusField = boardCustomFields.find(field => {
                     return field.display.name == 'Project Status';
                 });

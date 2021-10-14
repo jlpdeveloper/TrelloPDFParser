@@ -6,38 +6,31 @@ const fetch = require('node-fetch');
 
 module.exports = function (cardid) {
     let promise = new Promise((resolve, reject) => {
-    let apiurl = 'https://api.trello.com/1/cards/' + cardid + '/actions?' +
-        'token=' + config.apitoken + '&key=' + config.apikey;
-    fetch(apiurl, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-        .then(response => {
-            console.log(
-                `Response: ${response.status} ${response.statusText}`
-            );
-            //console.log(response.json());
-            return response.json();
-            
+        let apiurl = 'https://api.trello.com/1/cards/' + cardid + '/actions?' +
+            'token=' + config.apitoken + '&key=' + config.apikey;
+        fetch(apiurl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
         })
-        // .then(text =>{
-        //     console.log(text);
-        //     resolve('');
-        // })
-        .then(json => {
-           if(json > 0){
-               resolve(json);
-           }
-           else{
-               reject('This list has no cards!');
-           }
-        })
-        .catch(err => {
-            console.error(err);
-            reject('');
-        });
+            .then(response => {
+                
+                return response.json();
+
+            })
+            // .then(text =>{
+            //     console.log(text);
+            //     resolve('');
+            // })
+            .then(json => {
+
+                resolve(json);
+            })
+            .catch(err => {
+                console.error(err);
+                reject('');
+            });
     });
     return promise;
 };
