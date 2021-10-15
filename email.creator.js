@@ -21,10 +21,10 @@ module.exports = function (listCardInfo, members, boardCustomFields) {
           //once all the cards are formatted, then add to the email object
           Promise.all(cardPromises).then(cards => {
             //add the name of the list to the main email string
-            email += '<b>' + list + '</b>\r\n\r\n';
+            email +=  list + '\r\n';
             cards.forEach(_card => {
               email += _card;
-              email += '\r\n\r\n';
+              email += '\r\n';
               //resolve the list promise
               lResolve();
             });
@@ -41,7 +41,7 @@ module.exports = function (listCardInfo, members, boardCustomFields) {
     //once all the list promises are complete, write the file
     Promise.all(lPromises).then(() => {
       var now = new Date();
-      fs.writeFile((now.getMonth() + 1).toString() + now.getDate().toString() + + now.getFullYear().toString() + 'email.txt', email, () => {
+      fs.writeFile((now.getMonth() + 1).toString() + now.getDate().toString() + now.getFullYear().toString() + 'email.txt', email, () => {
         resolve(email);
       });
     });

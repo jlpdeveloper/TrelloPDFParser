@@ -5,11 +5,19 @@ module.exports = function (card, members, boardCustomFields) {
         try {
             getCustomFields(card.id).then(cardCustomFieldInfo => {
                 let cardInfo = '';
-                cardInfo += '<b>' + card.name + '</b>\r\nProject Members: ';
+                cardInfo += '- ' +  card.name + '\r\n     Project Members: ';
                 var memberArray = [];
                 members.forEach(member => {
                     if (card.idMembers.indexOf(member.id) >= 0) {
-                        memberArray.push(member.fullName);
+                        var fn = member.fullName;
+                        if(fn.indexOf('.')>= 0){
+                            var nameArray = fn.split('.');
+                            fn = '';
+                            nameArray.forEach(element => {
+                                fn += element[0].toUpperCase() + element.substr(1) + ' ';
+                            });
+                        }
+                        memberArray.push(fn);
                     }
                 });
                 if(memberArray.length > 0){
@@ -20,19 +28,25 @@ module.exports = function (card, members, boardCustomFields) {
                 }
                 
                 var statusField = boardCustomFields.find(field => {
-                    return field.display.name == 'Project Status';
+                    return field.name == 'Status';
                 });
                 var estimatedQADate = boardCustomFields.find(field => {
-                    return field.display.name == 'Tenative QA Date';
+                    return field.name == 'QA Release Date';
                 });
-                cardInfo+='\r\nProject Status: ';
+                cardInfo+='\r\n     Project Status: ';
                 //if status field exists, then get the info about it
                 if(statusField){
                     var status  = cardCustomFieldInfo.find(info => {
                         return info.idCustomField == statusField.id;
                     });
                     if(status){
-                        cardInfo += status.value + '\r\n';
+                        var optionText = statusField.options.find(o => {
+                            return o.id == status.idValue;
+                        })
+                        if(optionText){
+                            cardInfo += optionText.value.text + '\r\n';
+                        }
+                        
                     }
                     else{
                         cardInfo += 'N/A\r\n';
@@ -46,8 +60,11 @@ module.exports = function (card, members, boardCustomFields) {
                     var qaDate = cardCustomFieldInfo.find(info => {
                         return info.idCustomField == estimatedQADate.id;
                     });
+                    
                     if(qaDate){
-                        cardInfo += 'Estimated Date for QA Release: ' + qaDate.value  + '\r\n';
+                        var qDateObj = new Date(qaDate.value.date);
+                        var dString = (qDateObj.getMonth() + 1).toString() + '/' + qDateObj.getDate().toString() + '/' + qDateObj.getFullYear().toString()
+                        cardInfo += '     Estimated Date for QA Release: ' + dString  + '\r\n';
                     }
                 }
                 resolve(cardInfo);
