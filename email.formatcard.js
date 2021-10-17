@@ -5,7 +5,7 @@ module.exports = function (card, members, boardCustomFields) {
         try {
             getCustomFields(card.id).then(cardCustomFieldInfo => {
                 let cardInfo = '';
-                cardInfo += '- ' +  card.name + '\r\n     Project Members: ';
+                cardInfo +=  card.name + '\r\n     Project Members: ';
                 var memberArray = [];
                 members.forEach(member => {
                     if (card.idMembers.indexOf(member.id) >= 0) {

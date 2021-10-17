@@ -22,8 +22,9 @@ module.exports = function (listCardInfo, members, boardCustomFields) {
           Promise.all(cardPromises).then(cards => {
             //add the name of the list to the main email string
             email +=  list + '\r\n';
+            let cardCtr = 1;
             cards.forEach(_card => {
-              email += _card;
+              email += (cardCtr++).toString() + '.  ' + _card;
               email += '\r\n';
               //resolve the list promise
               lResolve();
