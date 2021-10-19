@@ -9,8 +9,8 @@
   "author": "Josh Potts",
   "license": "ISC",
   "dependencies": {
+    "enquirer": "^2.3.6",
     "node-fetch": "^2.6.2",
-    "prompt": "^1.2.0",
-    "prompt-checkbox": "^2.2.0"
+    "pdfmake": "^0.2.2"
   }
 }
